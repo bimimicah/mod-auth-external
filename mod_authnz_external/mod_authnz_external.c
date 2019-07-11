@@ -409,7 +409,7 @@ static int exec_external(const char *extpath, const char *extmethod,
     apr_procattr_t *procattr;
     apr_proc_t proc;
     apr_status_t rc= APR_SUCCESS;
-    char *child_env[13];
+    char *child_env[16];
     char *child_arg[MAX_ARG+2];
     const char *t;
     int i, status= -4;
@@ -434,7 +434,7 @@ static int exec_external(const char *extpath, const char *extmethod,
 
     if (!isdaemon)
     {
-	const char *cookie, *host, *remote_host;
+	const char *cookie, *host, *remote_host, *upn, *memberof, *primarygroupid;
 	authnz_external_dir_config_rec *dir= (authnz_external_dir_config_rec *)
 	    ap_get_module_config(r->per_dir_config, &authnz_external_module);
 	i= 0;
@@ -475,6 +475,12 @@ static int exec_external(const char *extpath, const char *extmethod,
 #ifdef _WINDOWS
     child_env[i++]= apr_pstrcat(r->pool, "SystemRoot=", getenv("SystemRoot"), NULL);
 #endif
+	if ((upn = apr_table_get(r->subprocess_env, "AUTHORIZE_USERPRINCIPALNAME")) != NULL)
+		child_env[i++] = apr_pstrcat(r->pool, "AUTHORIZE_USERPRINCIPALNAME=", upn, NULL);
+	if ((memberof = apr_table_get(r->subprocess_env, "AUTHORIZE_MEMBEROF")) != NULL)
+		child_env[i++] = apr_pstrcat(r->pool, "AUTHORIZE_MEMBEROF=", memberof, NULL);
+	if ((primarygroupid = apr_table_get(r->subprocess_env, "AUTHORIZE_PRIMARYGROUPID")) != NULL)
+		child_env[i++] = apr_pstrcat(r->pool, "AUTHORIZE_PRIMARYGROUPID=", primarygroupid, NULL);
 	/* NOTE:  If you add environment variables,
 	 *   remember to increase the size of the child_env[] array */
 

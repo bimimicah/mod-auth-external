@@ -9,6 +9,7 @@ addons:
   homebrew:
     packages:
       - httpd
+    update: true
   apt:
     packages:
       - apache2
@@ -19,7 +20,8 @@ before_install:
   - cd mod_authnz_external
 
 script:
-  - make
-  - sudo make install
+  - if [ "$TRAVIS_OS_NAME" != "windows" ]; then make ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then nmake ; fi
+  - if [ "$TRAVIS_OS_NAME" != "windows" ]; sudo make install ; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo service apache2 restart ; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then sudo brew services restart httpd ; fi

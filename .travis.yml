@@ -9,4 +9,7 @@ addons:
 before_install:
   - cd mod_authnz_external
 
-script: make && sudo make install
+script:
+  - make
+  - sudo make install
+  - sudo service apache2 restart

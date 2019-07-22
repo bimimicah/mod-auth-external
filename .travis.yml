@@ -21,7 +21,8 @@ before_install:
 
 script:
   - if [ "$TRAVIS_OS_NAME" != "windows" ]; then make ; fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then nmake ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then cl mod_authnz_external.c -c -D_WINDOWS -IC:\Apache24\include ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then link /dll /libpath:C:\Apache24\lib libhttpd.lib libapr-1.lib libaprutil-1.lib mod_authnz_external.obj ; fi
   - if [ "$TRAVIS_OS_NAME" != "windows" ]; then sudo make install ; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo service apache2 restart ; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then sudo brew services restart httpd ; fi

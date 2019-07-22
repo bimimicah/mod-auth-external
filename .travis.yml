@@ -30,4 +30,4 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then echo "LoadModule authnz_external_module modules/mod_authnz_external.so" >> /c/Apache24/conf/httpd.conf ; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo service apache2 restart ; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then sudo brew services restart httpd ; fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then sc stop Apache; sc start Apache ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then sc stop Apache; sleep 60; sc start Apache ; sleep 60; sc query Apache ; fi

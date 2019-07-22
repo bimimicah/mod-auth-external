@@ -1,12 +1,21 @@
 language: c
 
+os:
+  - linux
+  - osx
+  - windows
+
 addons:
+  homebrew:
+    packages:
+      - httpd
   apt:
     packages:
       - apache2
       - apache2-dev
 
 before_install:
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; choco install apache-httpd --params '"/installLocation:C:\Apache24"' ; fi
   - cd mod_authnz_external
 
 script:

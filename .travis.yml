@@ -23,8 +23,8 @@ script:
   - if [ "$TRAVIS_OS_NAME" != "windows" ]; then make ; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then export PATH="/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/amd64/:$PATH" ; fi
   - ls "/c/Program Files (x86)/Windows Kits/10/Include"
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then cl mod_authnz_external.c -c -D_WINDOWS -IC:\\Apache24\\include -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\shared" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\ucrt" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\um" ; fi
-  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then link /dll /libpath:C:\\Apache24\\lib libhttpd.lib libapr-1.lib libaprutil-1.lib mod_authnz_external.obj ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then cl mod_authnz_external.c -c -D_WINDOWS -IC:\\Apache24\\include -I"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\shared" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\ucrt" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\um" ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then link /dll /out:mod_authnz_external.so /libpath:C:\\Apache24\\lib libhttpd.lib libapr-1.lib libaprutil-1.lib mod_authnz_external.obj ; fi
   - if [ "$TRAVIS_OS_NAME" != "windows" ]; then sudo make install ; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo service apache2 restart ; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then sudo brew services restart httpd ; fi

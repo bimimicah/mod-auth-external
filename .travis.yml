@@ -22,7 +22,8 @@ before_install:
 script:
   - if [ "$TRAVIS_OS_NAME" != "windows" ]; then make ; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then export PATH="/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/amd64/:$PATH" ; fi
-  - ls "/c/Program Files (x86)/Windows Kits/10/Include"
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then ls "/c/Program Files (x86)/Windows Kits/10/Include" ; fi
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then curl https://raw.githubusercontent.com/traviscross/apr/master/include/apr_perms_set.h -o C:\\Apache24\\apr_perms_set.h ; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then cl mod_authnz_external.c -c -D_WINDOWS -IC:\\Apache24\\include -I"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\shared" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\ucrt" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\um" ; fi
   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then link /dll /out:mod_authnz_external.so /libpath:C:\\Apache24\\lib libhttpd.lib libapr-1.lib libaprutil-1.lib mod_authnz_external.obj ; fi
   - if [ "$TRAVIS_OS_NAME" != "windows" ]; then sudo make install ; fi

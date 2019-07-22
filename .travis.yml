@@ -7,3 +7,5 @@ addons:
 
 before_install:
   - cd mod_authnz_external
+
+script: make

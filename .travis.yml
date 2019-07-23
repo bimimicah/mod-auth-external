@@ -13,22 +13,28 @@ addons:
 before_install:
   - cd mod_authnz_external
 
-script:
-  - make
-  - sudo make install
-
 matrix:
   include:
     - name: "Linux Build"
       os: linux
-      after_script: sudo service apache2 restart
+      script:
+        - make
+        - sudo make install
+        - sudo service apache2 restart
     - name: "Mac OS X Build"
       os: osx
-      after_script: sudo brew services restart httpd
+      script:
+        - make
+        - sudo make install
+        - sudo brew services restart httpd
       cache:
         directories:
           - $HOME/Library/Caches/Homebrew
-      before_cache: brew cleanup
+          - /usr/local/Homebrew
+      before_cache:
+        - brew cleanup
+        # Credit https://discourse.brew.sh/t/best-practice-for-homebrew-on-travis-brew-update-is-5min-to-build-time/5215/9
+        - find /usr/local/Homebrew \! -regex ".+\.git.+" -delete
     - name: "Windows Build"
       os: windows
       install: choco install apache-httpd --params '/installLocation:C:\'
@@ -39,4 +45,4 @@ matrix:
         - cl mod_authnz_external.c -c -D_WINDOWS -IC:\\Apache24\\include -I"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\shared" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\ucrt" -I"C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\um"
         - link /out:C:\\Apache24\\modules\\mod_authnz_external.so /libpath:C:\\Apache24\\lib /libpath:"C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.16299.0\\ucrt\\x64" /libpath:"C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.16299.0\\um\\x64" /libpath:"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\lib\\amd64" -DLL libhttpd.lib libapr-1.lib libaprutil-1.lib mod_authnz_external.obj
         - echo "LoadModule authnz_external_module modules/mod_authnz_external.so" >> /c/Apache24/conf/httpd.conf
-      after_script: sc stop Apache; sleep 20; sc start Apache ; sleep 20; sc query Apache
+        - sc stop Apache; sleep 20; sc start Apache ; sleep 20; sc query Apache

@@ -1,10 +1,14 @@
 language: c
 
-os:
-  - linux
-  - osx
-  - windows
-    before-install: choco install apache-httpd --params '/installLocation:C:\'
+matrix:
+  include:
+    - name: "Linux Build"
+      os: linux
+    - name: "Mac OS X Build"
+      os: osx
+    - name: "Windows Build"
+      os: windows
+      before-install: choco install apache-httpd --params '/installLocation:C:\'
 
 addons:
   homebrew:

@@ -8,7 +8,7 @@ matrix:
       os: osx
     - name: "Windows Build"
       os: windows
-      before-install: choco install apache-httpd --params '/installLocation:C:\'
+      install: choco install apache-httpd --params '/installLocation:C:\'
 
 addons:
   homebrew:

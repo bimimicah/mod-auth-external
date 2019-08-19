@@ -44,7 +44,7 @@ matrix:
         - attrib -r "C:\Program Files (x86)\Microsoft Visual Studio 14.0/VC/bin/amd64/vcvars64.bat"
         - echo "nmake -f $PWD\Makefile.win" >> "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64\vcvars64.bat"
         - curl https://raw.githubusercontent.com/traviscross/apr/master/include/apr_perms_set.h -o $APACHEPATH\\include\\apr_perms_set.h
-        - "/c/Program Files \\(x86\\)/Microsoft Visual Studio 14.0/VC/bin/amd64/vcvars64.bat"
+        - "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\amd64\\vcvars64.bat"
         - cp mod_authnz_external.so $APACHEPATH\\modules\\mod_authnz_external.so
         - echo "LoadModule authnz_external_module modules/mod_authnz_external.so" >> /c/Apache24/conf/httpd.conf
         - sc stop Apache; sleep 15; sc start Apache ; sleep 15; sc query Apache

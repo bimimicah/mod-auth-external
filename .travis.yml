@@ -42,7 +42,7 @@ matrix:
         - export PATH="/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/amd64/:$PATH"
         - export APACHEPATH="C:\\Apache24"
         - attrib -r "C:\Program Files (x86)\Microsoft Visual Studio 14.0/VC/bin/amd64/vcvars64.bat"
-        - echo "nmake -f $PWD\Makefile.win" >> "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64\vcvars64.bat"
+        - echo "nmake -f $(pwd -W)\Makefile.win" >> "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64\vcvars64.bat"
         - curl https://raw.githubusercontent.com/traviscross/apr/master/include/apr_perms_set.h -o $APACHEPATH\\include\\apr_perms_set.h
         - "\"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\amd64\\vcvars64.bat\""
         - ls

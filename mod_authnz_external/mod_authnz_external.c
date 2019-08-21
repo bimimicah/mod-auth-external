@@ -1,5 +1,7 @@
 /* ====================================================================
  * Copyright (c) 1995 The Apache Group.  All rights reserved.
+ * Copyright (c) Nathan Neulinger, Tyler Allison, Jan Wolter and 
+ *               other contributors. Please see CONTRIBUTORS.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -96,6 +98,7 @@
 #define ENV_HOST	"HOST"		/* Remote Host */
 #define ENV_HTTP_HOST	"HTTP_HOST"	/* Local Host */
 #define ENV_CONTEXT	"CONTEXT"	/* Arbitrary Data from Config */
+#define ENV_METHOD	"METHOD"	/* Request method (eg. GET, HEAD, POST, OPTIONS, etc.) */
 /* Undefine this if you do not want cookies passed to the script */
 #define ENV_COOKIE	"COOKIE"
 
@@ -460,6 +463,9 @@ static int exec_external(const char *extpath, const char *extmethod,
 	if (r->uri)
 	    child_env[i++]= apr_pstrcat(p, ENV_URI"=", r->uri, NULL);
 
+	if (r->method)
+		child_env[i++] = apr_pstrcat(p, ENV_METHOD"=", r->method, NULL);
+
 	if ((host= apr_table_get(r->headers_in, "Host")) != NULL)
 	    child_env[i++]= apr_pstrcat(p, ENV_HTTP_HOST"=", host, NULL);
 
@@ -514,8 +520,8 @@ static int exec_external(const char *extpath, const char *extmethod,
 	((rc= apr_procattr_detach_set(procattr, isdaemon)) != APR_SUCCESS) ||
 
 	/* function to call if child has error after fork, before exec */
-	((rc= apr_procattr_child_errfn_set(procattr, extchilderr)
-	      != APR_SUCCESS)))
+	((rc= apr_procattr_child_errfn_set(procattr, extchilderr))
+	      != APR_SUCCESS))
     {
 	/* Failed.  Probably never happens. */
     	ap_log_rerror(APLOG_MARK, APLOG_ERR, rc, r,

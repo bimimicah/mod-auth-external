@@ -4,7 +4,7 @@ addons:
   homebrew:
     packages:
       - httpd
-    # update: true
+    update: false
   apt:
     packages:
       - apache2

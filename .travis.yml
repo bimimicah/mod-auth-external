@@ -4,7 +4,7 @@ addons:
   homebrew:
     packages:
       - httpd
-    update: true
+    # update: true
   apt:
     packages:
       - apache2
@@ -28,14 +28,14 @@ matrix:
         - make
         - sudo make install
         - sudo brew services restart httpd
-      cache:
-        directories:
-          - $HOME/Library/Caches/Homebrew
-          - /usr/local/Homebrew
-      before_cache:
-        - brew cleanup
-        # Credit https://discourse.brew.sh/t/best-practice-for-homebrew-on-travis-brew-update-is-5min-to-build-time/5215/9
-        - find /usr/local/Homebrew \! -regex ".+\.git.+" -delete
+      # cache:
+      #   directories:
+      #     - $HOME/Library/Caches/Homebrew
+      #     - /usr/local/Homebrew
+      # before_cache:
+      #   - brew cleanup
+      #   # Credit https://discourse.brew.sh/t/best-practice-for-homebrew-on-travis-brew-update-is-5min-to-build-time/5215/9
+      #   - find /usr/local/Homebrew \! -regex ".+\.git.+" -delete
     - name: "Windows Build"
       os: windows
       install: choco install apache-httpd --params '/installLocation:C:\'
